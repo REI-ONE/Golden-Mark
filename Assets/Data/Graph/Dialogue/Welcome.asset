@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7805254505198563827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6704002e357b26a44b7c720e8983983b, type: 3}
+  m_Name: Model Dialoque
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -264, y: -40}
+  ports:
+    keys:
+    - Start
+    - Finish
+    values:
+    - _fieldName: Start
+      _node: {fileID: -7805254505198563827}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Finish
+      _node: {fileID: -7805254505198563827}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Start
+        node: {fileID: -5332181213751191916}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Start: 0
+  Finish: 0
+  <Name>k__BackingField: Anton
+  <Speech>k__BackingField: Wtf??
+--- !u!114 &-5332181213751191916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6704002e357b26a44b7c720e8983983b, type: 3}
+  m_Name: Model Dialoque
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -24}
+  ports:
+    keys:
+    - Start
+    - Finish
+    values:
+    - _fieldName: Start
+      _node: {fileID: -5332181213751191916}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Finish
+        node: {fileID: -7805254505198563827}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Finish
+      _node: {fileID: -5332181213751191916}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Start
+        node: {fileID: 9115881173027039504}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Start: 0
+  Finish: 0
+  <Name>k__BackingField: Vlad
+  <Speech>k__BackingField: No, its so cool!
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e09f7fcfb643ed4f9d7aa7e9a4afb55, type: 3}
+  m_Name: Welcome
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -7805254505198563827}
+  - {fileID: -5332181213751191916}
+  - {fileID: 9115881173027039504}
+--- !u!114 &9115881173027039504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6704002e357b26a44b7c720e8983983b, type: 3}
+  m_Name: Model Dialoque
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 536, y: -8}
+  ports:
+    keys:
+    - Start
+    - Finish
+    values:
+    - _fieldName: Start
+      _node: {fileID: 9115881173027039504}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Finish
+        node: {fileID: -5332181213751191916}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Finish
+      _node: {fileID: 9115881173027039504}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Start: 0
+  Finish: 0
+  <Name>k__BackingField: Anton
+  <Speech>k__BackingField: heh, yes of coust.
