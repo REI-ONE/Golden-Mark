@@ -23,9 +23,4 @@ public class GameInstaller : MonoInstaller
         Container.BindInstance<IViewDialoque>(_dialoque).AsSingle();
         _graphs.Bind(Container);
     }
-
-    private void Start()
-    {
-        new PresentarDialoque(Container.ResolveId<Dialoque>("Welcome"), Container.Resolve<IViewDialoque>()).Execute();
-    }
 }
