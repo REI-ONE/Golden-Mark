@@ -1,5 +1,6 @@
 ﻿using Test;
 using UnityEngine;
+using static Test.Player;
 
 namespace SO
 {
@@ -29,7 +30,17 @@ namespace SO
         public void Update()
         {
             Vector3 targetVelocity = new Vector2(_input.x * 10f, _rigidbody.velocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _zero, _stats.Smoothing);
+            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _zero, _stats.MovementSmoothing);
+        }
+
+        public void FixedUpdate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void LateUpdate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
