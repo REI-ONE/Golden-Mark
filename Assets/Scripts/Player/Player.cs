@@ -1,7 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
-using Zenject;
+﻿using UnityEngine;
 
 namespace Test
 {
@@ -15,7 +12,7 @@ namespace Test
         [SerializeField] public Vector3 _groundCheck;
         private StateMachine _stateMachine;
         private InputAxis _inputAxis = new InputAxis();
-        private IState _idleState, _moveState, _jumpState;
+        private IState _idleState, _moveState, _jumpState, _dashState;
 
         //[Inject]
         //public void Construct(SO.MoveState moveState)
@@ -30,6 +27,7 @@ namespace Test
             _idleState = new IdleState();
             _jumpState = new JumpState(_rigidbody, ref _inputAxis, ref _stats);
             _moveState = new MoveState(_rigidbody, ref _inputAxis, ref _stats);
+            _dashState = new DashState(this, _rigidbody, ref _inputAxis, ref _stats);
 
             _stateMachine = new StateMachine(_idleState);
         }
@@ -54,17 +52,21 @@ namespace Test
             switch (_stateMachine.CurrentState)
             {
                 case IdleState:
-                    _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y);
                     if (Mathf.Abs(_inputAxis.x) > 0) _stateMachine.ChangeState(_moveState);
                     if (Input.GetKeyDown(KeyCode.Space)) _stateMachine.ChangeState(_jumpState);
+                    if (Input.GetKeyDown(KeyCode.LeftShift)) _stateMachine.ChangeState(_dashState);
                     break;
                 case MoveState:
                     if (_inputAxis.x == 0) _stateMachine.ChangeState(_idleState);
                     if (Input.GetKeyDown(KeyCode.Space)) _stateMachine.ChangeState(_jumpState);
+                    if (Input.GetKeyDown(KeyCode.LeftShift)) _stateMachine.ChangeState(_dashState);
                     break;
                 case JumpState:
                     _stateMachine.ChangeState(_idleState);
                     //if (Mathf.Abs(_inputAxis.x) > 0) _stateMachine.ChangeState(_moveState);
+                    break;
+                case DashState:
+                    if (!_stats.IsDashing) _stateMachine.ChangeState(_idleState);
                     break;
             }
         }
@@ -99,14 +101,20 @@ namespace Test
         [System.Serializable]
         public class Stats
         {
+            [field: SerializeField] public float MovementSpeed { get; set; } = 10f;
             [field: SerializeField] public float MovementSmoothing { get; set; } = 0f;
             [field: SerializeField] public float JumpForce { get; set; } = 400f;
             [field: SerializeField] public bool AirControl { get; set; } = true;
+            [field: SerializeField] public float AirControlSmoothing { get; set; } = 0.5f;
+            [field: SerializeField] public float DashForce { get; set; } = 25f;
+            [field: SerializeField] public float DashTime { get; set; } = 0.5f;
+            [field: SerializeField] public float DashCooldown { get; set; } = 3f;
+            public bool FacingRight { get; set; } = true;
             public bool CanMove { get; set; } = true;
             public bool Grounded { get; set; } = false;
             public bool Jump { get; set; } = false;
             public bool CanDoubleJump { get; set; } = false;
-            public bool CanDash { get; set; } = false;
+            public bool CanDash { get; set; } = true;
             public bool Dash { get; set; } = false;
             public bool IsDashing { get; set; } = false;
             public float LimitFallSpeed { get; set; } = 25f;
