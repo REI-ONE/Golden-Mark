@@ -1,10 +1,13 @@
+using Game.Setting;
 using UnityEngine;
+using Game.Data;
 using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
     [SerializeField] private Graphs _graphs;
     [SerializeField] private ViewDialoque _dialoque;
+    [SerializeField] private GameSetting _setting;
 
     [System.Serializable]
     public class Graphs
@@ -22,5 +25,7 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindInstance<IViewDialoque>(_dialoque).AsSingle();
         _graphs.Bind(Container);
+        GameSetting game = _setting.Copy<GameSetting>();
+        Container.BindInstance<IPause>(game.Pause);
     }
 }

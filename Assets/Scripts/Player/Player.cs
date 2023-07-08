@@ -5,6 +5,7 @@ namespace Test
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
     {
+        [SerializeField] public Game.StateMachine.ContextStateMachine stateMachine = new Game.StateMachine.ContextStateMachine();
         [SerializeField] private Stats _stats = new Stats();
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] public float _groundedRadius = 0.2f;
