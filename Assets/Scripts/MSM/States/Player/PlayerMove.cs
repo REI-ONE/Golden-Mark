@@ -29,7 +29,7 @@ namespace Game.StateMachine.State
 
         public override void Update()
         {
-            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            if (Input.GetAxis("Horizontal") == 0)
                 Context.FindToChange(typeof(PlayerIdle));
         }
 
