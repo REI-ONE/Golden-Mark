@@ -5,6 +5,7 @@ namespace Game.StateMachine.State
         public void OnEnter();
         public void OnExit();
         public void OnUpdate();
+        public void OnFixedUpdate();
     }
 
     public abstract class BaseState : IState
@@ -18,6 +19,10 @@ namespace Game.StateMachine.State
         }
 
         public virtual void OnUpdate()
+        {
+        }
+
+        public virtual void OnFixedUpdate()
         {
         }
     }

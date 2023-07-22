@@ -5,19 +5,19 @@ namespace Game.StateMachine.State
 {
     public class UnitStateRun : UnitStateWalk
     {
-        private float _multiplayer = 0f;
+        private float _multiplier = 0f;
 
         public UnitStateRun(UnitDataBox data) : base(data)
         {
             StartAnimation = 2;
-            _multiplayer = 2f;
+            _multiplier = 2f;
         }
 
         public override void Move()
         {
             Direction.y = Rigidbody2D.velocity.y;
-            Direction.x = Input.GetAxis("Horizontal");
-            Rigidbody2D.velocity = Direction * DataBox.Data.Stats.Speed * _multiplayer;
+            Direction.x = Input.GetAxis("Horizontal") * DataBox.Data.Stats.Speed * _multiplier;
+            Rigidbody2D.velocity = Direction;
         }
     }
 }

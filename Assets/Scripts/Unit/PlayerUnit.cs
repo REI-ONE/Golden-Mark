@@ -28,5 +28,10 @@ namespace Game.Gameplay.Units
         {
             Controller?.Monitoring();
         }
+
+        private void FixedUpdate()
+        {
+            Controller?.FixedMonitoring();
+        }
     }
 }

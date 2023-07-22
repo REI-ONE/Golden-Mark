@@ -28,14 +28,19 @@ namespace Game.StateMachine.State
         public override void OnUpdate()
         {
             base.OnUpdate();
+        }
+        
+        public override void OnFixedUpdate()
+        {
+            base.OnFixedUpdate();
             Move();
         }
 
         public virtual void Move()
         {
             Direction.y = Rigidbody2D.velocity.y;
-            Direction.x = Input.GetAxis("Horizontal");
-            Rigidbody2D.velocity = Direction * DataBox.Data.Stats.Speed;
+            Direction.x = Input.GetAxis("Horizontal") * DataBox.Data.Stats.Speed;
+            Rigidbody2D.velocity = Direction;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Game.Gameplay.Units
 
         public virtual bool IsGround()
         {
-            RaycastHit2D[] hit = Physics2D.RaycastAll(_transform.position, Vector2.down, _transform.localScale.y);
+            RaycastHit2D[] hit = Physics2D.RaycastAll(_transform.position, Vector2.down, _transform.localScale.y * 1.5f);
 
             if (hit != null && (hit.Length > 0))
             {

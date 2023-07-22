@@ -18,6 +18,6 @@ MonoBehaviour:
     Stats:
       Life: 100
       MentalLife: 200
-      Speed: 5
-      JumpPower: 10
+      Speed: 8
+      JumpPower: 15
     Components: []

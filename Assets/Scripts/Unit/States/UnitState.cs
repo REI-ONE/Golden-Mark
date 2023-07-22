@@ -11,6 +11,7 @@ namespace Game.StateMachine.State
         public event Action Enter;
         public event Action Exit;
         public event Action Update;
+        public event Action FixedUpdate;
 
         public UnitState(UnitDataBox data)
         {
@@ -33,6 +34,12 @@ namespace Game.StateMachine.State
         {
             base.OnUpdate();
             Update?.Invoke();
+        }
+
+        public override void OnFixedUpdate()
+        {
+            base.OnFixedUpdate();
+            FixedUpdate?.Invoke();
         }
     }
 }
