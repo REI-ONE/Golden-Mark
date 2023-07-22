@@ -24,15 +24,15 @@ public class DashState : IState
     {
         if (_stats.CanDash)
         {
+            _player.StartCoroutine(DashCooldown());
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             //_rigidbody.AddForce(new Vector2(_rigidbody.transform.localScale.x * _stats.DashForce, 0f));
-            _player.StartCoroutine(DashCooldown());
         }
     }
 
     public void Exit()
     {
-        _rigidbody.velocity = Vector2.zero;
+        //_rigidbody.velocity = Vector2.zero;
     }
 
     public void FixedUpdate()
@@ -50,10 +50,11 @@ public class DashState : IState
     private IEnumerator DashCooldown()
     {
         //animator.SetBool("IsDashing", true);
-        _stats.IsDashing = true;
         _stats.CanDash = false;
+        _stats.IsDashing = true;
         yield return new WaitForSeconds(_stats.DashTime);
         _stats.IsDashing = false;
+        _rigidbody.velocity = Vector2.zero;
         yield return new WaitForSeconds(_stats.DashCooldown);
         _stats.CanDash = true;
     }

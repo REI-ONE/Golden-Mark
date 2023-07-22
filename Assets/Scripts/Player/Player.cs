@@ -8,6 +8,7 @@ namespace Test
         [SerializeField] public Game.StateMachine.ContextStateMachine stateMachine = new Game.StateMachine.ContextStateMachine();
         [SerializeField] private Stats _stats = new Stats();
         [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private Animator _animator;
         [SerializeField] public float _groundedRadius = 0.2f;
         [SerializeField] public LayerMask _ground;
         [SerializeField] public Vector3 _groundCheck;
@@ -26,7 +27,7 @@ namespace Test
         private void Awake()
         {
             _idleState = new IdleState();
-            _jumpState = new JumpState(_rigidbody, ref _inputAxis, ref _stats);
+            _jumpState = new JumpState(_rigidbody, _animator, ref _inputAxis, ref _stats);
             _moveState = new MoveState(_rigidbody, ref _inputAxis, ref _stats);
             _dashState = new DashState(this, _rigidbody, ref _inputAxis, ref _stats);
 
@@ -43,6 +44,7 @@ namespace Test
         private void Update()
         {
             InputAxis();
+            SpeedToAnim();
             _stateMachine.CurrentState.Update();
             SwitchState();
             //print(_stateMachine.CurrentState);
@@ -53,25 +55,35 @@ namespace Test
             switch (_stateMachine.CurrentState)
             {
                 case IdleState:
-                    if (Mathf.Abs(_inputAxis.x) > 0) _stateMachine.ChangeState(_moveState);
-                    if (Input.GetKeyDown(KeyCode.Space)) _stateMachine.ChangeState(_jumpState);
-                    if (Input.GetKeyDown(KeyCode.LeftShift)) _stateMachine.ChangeState(_dashState);
+                    if (Mathf.Abs(_inputAxis.x) > 0)
+                        _stateMachine.ChangeState(_moveState);
+                    if (Input.GetKeyDown(KeyCode.Space))
+                        _stateMachine.ChangeState(_jumpState);
+                    if (Input.GetKeyDown(KeyCode.LeftShift) && _stats.CanDash)
+                        _stateMachine.ChangeState(_dashState);
                     break;
                 case MoveState:
-                    if (_inputAxis.x == 0) _stateMachine.ChangeState(_idleState);
-                    if (Input.GetKeyDown(KeyCode.Space)) _stateMachine.ChangeState(_jumpState);
-                    if (Input.GetKeyDown(KeyCode.LeftShift)) _stateMachine.ChangeState(_dashState);
+                    if (_inputAxis.x == 0)
+                        _stateMachine.ChangeState(_idleState);
+                    if (Input.GetKeyDown(KeyCode.Space) && (_stats.CanDoubleJump || _stats.Grounded))
+                        _stateMachine.ChangeState(_jumpState);
+                    if (Input.GetKeyDown(KeyCode.LeftShift) && _stats.CanDash)
+                        _stateMachine.ChangeState(_dashState);
                     break;
                 case JumpState:
                     _stateMachine.ChangeState(_idleState);
                     //if (Mathf.Abs(_inputAxis.x) > 0) _stateMachine.ChangeState(_moveState);
                     break;
                 case DashState:
-                    if (!_stats.IsDashing) _stateMachine.ChangeState(_idleState);
+                    if (!_stats.IsDashing)
+                        _stateMachine.ChangeState(_idleState);
                     break;
             }
         }
+
         private void InputAxis() => _inputAxis.Set(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        private void SpeedToAnim() => _animator.SetFloat("Speed", Mathf.Abs(_inputAxis.x * _stats.MovementSpeed));
 
         private void CheckGround()
         {

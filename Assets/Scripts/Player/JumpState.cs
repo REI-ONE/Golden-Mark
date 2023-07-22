@@ -8,23 +8,22 @@ public class JumpState : IState
     private Rigidbody2D _rigidbody;
     private InputAxis _input;
     private Stats _stats;
+    private Animator _animator;
 
-    public JumpState(Rigidbody2D rigidbody, ref InputAxis input, ref Stats stats)
+    public JumpState(Rigidbody2D rigidbody, Animator animator, ref InputAxis input, ref Stats stats)
     {
         _rigidbody = rigidbody;
+        _animator = animator;
         _input = input;
         _stats = stats;
     }
 
     public void Enter()
     {
-        // If the player should_stats.Jump...
         if (_stats.Grounded)
         {
-            Debug.Log("State Entered");
-            // Add a vertical force to the player.
-            //animator.SetBool("IsJumping", true);
-            //animator.SetBool("JumpUp", true);
+            _animator?.SetBool("IsJumping", true);
+            _animator?.SetBool("JumpUp", true);
             _stats.Grounded = false;
             _rigidbody.AddForce(new Vector2(0f, _stats.JumpForce));
             _stats.CanDoubleJump = true;
@@ -36,7 +35,7 @@ public class JumpState : IState
             _stats.CanDoubleJump = false;
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
             _rigidbody.AddForce(new Vector2(0f, _stats.JumpForce / 1.2f));
-            //animator.SetBool("IsDoubleJumping", true);
+            //_animator?.SetBool("IsDoubleJumping", true);
         }
     }
 
