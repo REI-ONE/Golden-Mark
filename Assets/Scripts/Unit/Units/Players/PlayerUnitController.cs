@@ -15,6 +15,8 @@ namespace Game.Gameplay.Units
         private UnitStateWalk _walk;
         private UnitStateRun _run;
         private UnitStateJump _jump;
+        private UnitStatePistolFire _pistolFire;
+        private UnitStatePistolreload _pistolReload;
 
         public PlayerUnitController(UnitDataBox data)
         {
@@ -24,6 +26,8 @@ namespace Game.Gameplay.Units
             _walk = new UnitStateWalk(DataBox);
             _run = new UnitStateRun(DataBox);
             _jump = new UnitStateJump(DataBox);
+            _pistolFire = new UnitStatePistolFire(DataBox);
+            _pistolReload = new UnitStatePistolreload(DataBox);
 
             Switch(_idle);
         }
@@ -61,7 +65,11 @@ namespace Game.Gameplay.Units
             base.Monitoring();
             Rotate();
 
-            if (Input.GetKeyDown(KeyCode.Space) && IsGround())
+            if (Input.GetMouseButtonDown(0))
+                Switch(_pistolFire);
+            else if (Input.GetMouseButton(1))
+                Switch(_pistolReload);
+            else if (Input.GetKeyDown(KeyCode.Space) && IsGround())
                 Switch(_jump);
             else if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Horizontal") != 0f)
                 Switch(_run);

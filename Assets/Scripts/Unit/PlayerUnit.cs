@@ -1,5 +1,8 @@
+using Game.Weapons;
 using UnityEngine;
+using Game.Audio;
 using Game.Data;
+using Zenject;
 
 namespace Game.Gameplay.Units
 {
@@ -8,11 +11,17 @@ namespace Game.Gameplay.Units
         [SerializeField] private UnitModel _data;
         [SerializeField] private Animator _animator;
         [SerializeField] private Rigidbody2D _rigidbody2D;
+        [SerializeField] private Weapon _weapon;
+
+        private IAudioController _audioController;
 
         private void Start()
         {
             Init(_data.Return());
         }
+
+        [Inject]
+        public void Construct(IAudioController audioController) => _audioController = audioController;
 
         public override void Init(UnitDataBox data)
         {
@@ -20,6 +29,8 @@ namespace Game.Gameplay.Units
             DataBox.Data.Components.Add(_animator);
             DataBox.Data.Components.Add(_rigidbody2D);
             DataBox.Data.Components.Add(transform);
+            DataBox.Data.Components.Add(_audioController.Type);
+            DataBox.Data.Components.Add(_weapon);
 
             Controller = new PlayerUnitController(DataBox);
         }
