@@ -2,10 +2,16 @@ using System.Collections.Generic;
 using Game.Interactables;
 using UnityEngine;
 using Game.Data;
+using System;
 
 namespace Game.Weapons
 {
-    public interface IWeapon
+    public interface IWeaponCallback
+    {
+        public event Action<int> Executed;
+    }
+
+    public interface IWeapon : IWeaponCallback
     {
         public PistolBox Data { get; }
 
@@ -19,11 +25,14 @@ namespace Game.Weapons
         [SerializeField] private Bullet _prefab;
         [SerializeField] private Transform _parentBullet;
 
+        public int BulletAmmount => _runtimeData.Amount;
         public PistolBox Data { get; private set; }
         private PistolBox _runtimeData;
 
         private Transform _owner;
         private List<Bullet> _bullets;
+
+        public event Action<int> Executed;
 
         private void Awake()
         {
@@ -50,6 +59,7 @@ namespace Game.Weapons
                 bullet.gameObject.SetActive(true);
                 _bullets.Add(bullet);
                 _runtimeData.Amount -= 1;
+                Executed?.Invoke(_runtimeData.Amount);
                 return true;
             }
             return false;
@@ -58,6 +68,7 @@ namespace Game.Weapons
         public void Reload()
         {
             _runtimeData = Data;
+            Executed?.Invoke(_runtimeData.Amount);
         }
 
         private void BulletCollider(Bullet bullet, IInterractable interractable)

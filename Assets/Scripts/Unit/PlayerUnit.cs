@@ -8,10 +8,11 @@ namespace Game.Gameplay.Units
 {
     public class PlayerUnit : Unit
     {
+        [field: SerializeField] public Weapon Weapon { get; private set; }
+
         [SerializeField] private UnitModel _data;
         [SerializeField] private Animator _animator;
         [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private Weapon _weapon;
 
         private IAudioController _audioController;
 
@@ -30,7 +31,7 @@ namespace Game.Gameplay.Units
             DataBox.Data.Components.Add(_rigidbody2D);
             DataBox.Data.Components.Add(transform);
             DataBox.Data.Components.Add(_audioController.Type);
-            DataBox.Data.Components.Add(_weapon);
+            DataBox.Data.Components.Add(Weapon);
 
             Controller = new PlayerUnitController(DataBox);
         }
