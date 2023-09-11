@@ -28,7 +28,7 @@ namespace Game.Weapons
         private void Awake()
         {
             _runtimeData = Data = Model.PistolBox;
-            _owner = GetComponentInParent<Transform>();
+            _owner = transform.parent;
             _bullets = new List<Bullet>(Data.MaxAmount);
         }
 
