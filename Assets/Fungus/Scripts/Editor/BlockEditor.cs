@@ -151,8 +151,11 @@ namespace Fungus.EditorUtils
                 EditorGUILayout.EndHorizontal();
 
                 SerializedProperty descriptionProp = serializedObject.FindProperty("description");
-                EditorGUILayout.PropertyField(descriptionProp);
-
+                try
+                {
+                    EditorGUILayout.PropertyField(descriptionProp);
+                }
+                catch { }
 
                 SerializedProperty suppressProp = serializedObject.FindProperty("suppressAllAutoSelections");
                 EditorGUILayout.PropertyField(suppressProp);

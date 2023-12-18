@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/Menu.unity
+    guid: cb3d71c5417a3c746883671c0d055087
+  - enabled: 1
+    path: Assets/Scenes/Lvls/FirtsRoom.unity
+    guid: 5272676bcb1cdab429d55f07271b6e02
+  - enabled: 1
+    path: Assets/Scenes/Lvls/StartDLC.unity
+    guid: 59ed4f0ef54f0ce40bf917dece0c809f
+  - enabled: 1
+    path: Assets/Scenes/Dialogis.unity
+    guid: 5b29c4c59fe4ccc49816456cb1db702f
   m_configObjects: {}
