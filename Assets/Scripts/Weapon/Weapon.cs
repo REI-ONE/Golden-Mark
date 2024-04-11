@@ -1,81 +1,132 @@
 using System.Collections.Generic;
-using Game.Interactables;
+using Game.HamdItems;
 using UnityEngine;
 using Game.Data;
-using System;
 
 namespace Game.Weapons
 {
-    public interface IWeaponCallback
+    public interface IWeapon : IItemHand
     {
-        public event Action<int> Executed;
+        public Magazine Magazine { get; }
+
+        public Quaternion LookTargte(Transform target, float maxAngle);
+        public bool TryShot();
+        public void Shot(SOAmmo ammo);
+        public void Reloading();
+        public void Drop();
     }
 
-    public interface IWeapon : IWeaponCallback
+    public abstract class Weapon : ItemHand, IWeapon
     {
-        public PistolBox Data { get; }
+        public Magazine Magazine { get; private set; }
 
-        public bool Fire();
-        public void Reload();
-    }
+        protected SOWeapon _SOWeapon;
+        protected List<AmmoHandPistol> _ammos;
+        private float _delay;
 
-    public class Weapon : MonoBehaviour, IWeapon
-    {
-        [field: SerializeField] public PistolModel Model { get; private set; }
-        [SerializeField] private Bullet _prefab;
-        [SerializeField] private Transform _parentBullet;
-
-        public int BulletAmmount => _runtimeData.Amount;
-        public PistolBox Data { get; private set; }
-        private PistolBox _runtimeData;
-
-        private Transform _owner;
-        private List<Bullet> _bullets;
-
-        public event Action<int> Executed;
-
-        private void Awake()
+        public override void Init(SOBaseItem data)
         {
-            _runtimeData = Data = Model.PistolBox;
-            _owner = transform.parent;
-            _bullets = new List<Bullet>(Data.MaxAmount);
+            base.Init(data);
+            _SOWeapon = data as SOWeapon;
         }
 
-        private void Update()
+        public override void SetOwner(Unit unit)
         {
-            if (_bullets != null && _bullets.Count > 0)
-                for (int i = _bullets.Count - 1; i > -1; i--)
-                    _bullets[i].Move();
+            base.SetOwner(unit);
+            Magazine = new Magazine();
+            Magazine.Init(_SOWeapon.SOMagazine);
+            _ammos = new List<AmmoHandPistol>((int)_SOWeapon.SOMagazine.Model.Data.Amount.Max);
         }
 
-        public bool Fire()
+        public virtual bool TryShot()
         {
-            if (_runtimeData.Amount > 0)
+            if (_delay <= 0f)
             {
-                Bullet bullet = Instantiate(_prefab, _parentBullet);
-                bullet.transform.position = transform.position;
-                bullet.Init((_owner.localScale.x == 1 ? Vector2.right : Vector2.left, Data.Speed));
-                bullet.Done += BulletCollider;
-                bullet.gameObject.SetActive(true);
-                _bullets.Add(bullet);
-                _runtimeData.Amount -= 1;
-                Executed?.Invoke(_runtimeData.Amount);
-                return true;
+                SOAmmo ammo = Magazine.Get();
+
+                if (ammo != null)
+                {
+                    Shot(ammo);
+                    return true;
+                }
             }
+
             return false;
         }
 
-        public void Reload()
+        public virtual void Shot(SOAmmo ammo)
         {
-            _runtimeData = Data;
-            Executed?.Invoke(_runtimeData.Amount);
+            AmmoHandPistol ammopistol = GameObject.Instantiate(ammo.PrefabHand) as AmmoHandPistol;
+            ammopistol.transform.position = Owner.Hand.Anchor.position;
+            ammopistol.Consturctor(DiContainer);
+            ammopistol.SetOwner(Owner);
+            ammopistol.Init(ammo);
+            _ammos.Add(ammopistol);
+            _delay = _SOWeapon.DelayBetweenShots;
         }
 
-        private void BulletCollider(Bullet bullet, IInterractable interractable)
+        public virtual void Reloading()
         {
-            bullet.Done -= BulletCollider;
-            _bullets.Remove(bullet);
-            Destroy(bullet.gameObject);
+            if (Magazine.CanUse)
+            {
+                Magazine.Reloading();
+            }
+        }
+
+        public virtual void Drop()
+        {
+            ItemHand item = GameObject.Instantiate(_SOWeapon.PrefabHand);
+            float offset = 3f;
+            item.transform.position = Owner.transform.position + Owner.transform.localScale * offset;
+            Destroy(Owner.Hand.ItemHand.gameObject);
+        }
+
+        //public override void Execute()
+        //{
+        //    base.Execute();
+        //    if (!TryShot())
+        //    {
+        //        Reloading();
+        //    }
+        //}
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if (_delay > 0f)
+            {
+                _delay -= Time.deltaTime;
+            }
+
+            for (int index = _ammos.Count - 1; index >= 0; index--)
+            {
+                if (_ammos[index] != null)
+                {
+                    _ammos[index].OnUpdate();
+                }
+                else
+                {
+                    _ammos.RemoveAt(index);
+                }
+            }
+
+            Magazine?.OnUpdate();
+        }
+
+        public virtual Quaternion LookTargte(Transform target, float maxAngle)
+        {
+            // Получаем локальное направление к целевому объекту от родительского объекта
+            Vector3 localTargetDirection = transform.parent.InverseTransformDirection(target.position - transform.position);
+
+            // Получаем угол между локальным направлением и осью X
+            float angle = Mathf.Atan2(localTargetDirection.y, localTargetDirection.x) * Mathf.Rad2Deg;
+
+            // Ограничиваем угол в пределах от -90 до 90 градусов
+            angle = Mathf.Clamp(angle, -maxAngle, maxAngle);
+
+            // Поворачиваем подчиненный объект в соответствии с углом
+            return Quaternion.Euler(0, 0, angle);
         }
     }
 }

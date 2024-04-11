@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c507f2fbb333641b3cb42fac7fa5d2, type: 3}
+  m_Name: Magazine BigPistol
+  m_EditorClassIdentifier: 
+  <PrefabUp>k__BackingField: {fileID: 7515322156564040025, guid: cd744ef9a209f6445aec022769107e14, type: 3}
+  <PrefabHand>k__BackingField: {fileID: 3731472670382662780, guid: 703ad79ea8fd37946a93b541a5ab9022, type: 3}
+  <SOAmmo>k__BackingField: {fileID: 11400000, guid: 5d367a67634d8c542840556beb103d93, type: 2}
+  <Model>k__BackingField:
+    Data:
+      Icon: {fileID: 0}
+      Name: "\u0411\u0430\u0440\u0430\u043D\u043A\u0430 \u043F\u0430\u0442\u0440\u043E\u043D\u043E\u0432"
+      Description: "\u0411\u0430\u0440\u0430\u043D\u043A\u0430 \u043F\u0430\u0442\u0440\u043E\u043D\u043E\u0432
+        \u0434\u043B\u044F \u0440\u0435\u0432\u043E\u043B\u044C\u0432\u0435\u0440\u043E\u0432."
+      Amount:
+        Value: 6
+        Max: 6
+      Reloading: 3

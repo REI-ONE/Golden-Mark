@@ -1,45 +1,22 @@
-using Game.Callbacks;
-using Game.Data;
-using System;
+using UnityEngine;
 
-namespace Game.StateMachine.State
+namespace Game
 {
-    public class UnitState : BaseState, IStateCallback
+    public class UnitState : State
     {
-        public UnitDataBox DataBox { get; protected set; }
+        public virtual float MultiplayX { get; protected set; } = 1f;
+        public IUnitController Controller { get; private set; }
+        public Collider2D Collider { get; private set; }
+        public Animator Animator { get; private set; }
+        public Rigidbody2D Rigidbody { get; private set; }
 
-        public event Action Enter;
-        public event Action Exit;
-        public event Action Update;
-        public event Action FixedUpdate;
-
-        public UnitState(UnitDataBox data)
+        public UnitState(IUnitController controller)
         {
-            DataBox = data;
-        }
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            Enter?.Invoke();
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-            Exit?.Invoke();
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            Update?.Invoke();
-        }
-
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            FixedUpdate?.Invoke();
+            Machine = controller as StateMachine;
+            Controller = controller;
+            Collider = controller.Owner.Collider;
+            Animator = controller.Owner.Animator;
+            Rigidbody = controller.Owner.Rigidbody;
         }
     }
 }

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449e6b6fe9029db448192d15369c0ebf, type: 3}
+  m_Name: Enemy
+  m_EditorClassIdentifier: 
+  <Model>k__BackingField:
+    Data:
+      Portraite: {fileID: 0}
+      Name: "\u0412\u0442\u043E\u0440\u043E\u0441\u043E\u0440\u0442\u043D\u044B\u0439
+        \u043A\u043E\u0432\u0431\u043E\u0439"
+      Description: "\u041A\u0430\u043A\u043E\u0439-\u0442\u043E \u0447\u0443\u0434\u0438\u043A
+        \u0440\u0435\u0448\u0438\u0432\u0448\u044B\u0439 \u0447\u0442\u043E \u0435\u0441\u043B\u0438
+        \u0443 \u043D\u0435\u0433\u043E \u0435\u0441\u0442\u044C \u043F\u0443\u0448\u043A\u0430,
+        \u0442\u043E \u043E\u043D \u0442\u043E\u0436\u0435 \u043A\u043E\u0432\u0431\u043E\u0439. "
+      <Hero>k__BackingField: 0
+      <Stats>k__BackingField:
+        <Health>k__BackingField:
+          Value: 100
+          Max: 100
+        <MoralHealt>k__BackingField:
+          Value: 100
+          Max: 100
+        <Speed>k__BackingField: 10
+        <JumpPower>k__BackingField: 759
+  <UnitPrefab>k__BackingField: {fileID: 2956651953109928398, guid: 4206a4bc69b09814c96c507d0e6e2341, type: 3}
+  <SOWeapon>k__BackingField: {fileID: 11400000, guid: 0e637c492dbe05d49a3a976201b1224f, type: 2}
