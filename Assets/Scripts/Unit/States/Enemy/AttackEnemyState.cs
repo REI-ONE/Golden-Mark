@@ -13,12 +13,12 @@ namespace Game
         {
             IWeapon weapon = null;
 
-            if (Controller.Owner.Hand.Empty && (Controller.Owner.Hand.ItemHand as IWeapon) == null)
+            if (Controller.Owner.Hand.Empty & (weapon = Controller.Owner.Hand.ItemHand as IWeapon) == null)
             {
                 return;
             }
 
-            if (!weapon.TryShot())
+            if (!weapon.TryShot(target.transform.position) & weapon.Magazine.Empty)
             {
                 weapon.Reloading();
             }

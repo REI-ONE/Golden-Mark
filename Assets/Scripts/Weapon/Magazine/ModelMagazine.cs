@@ -16,5 +16,11 @@ namespace Game
     [Serializable]
     public class ModelMagazine : Model<MagazineData>
     {
+        public override void Set(MagazineData data)
+        {
+            MagazineData magazine = data;
+            magazine.Amount = new Stat<float>(data.Amount);
+            base.Set(magazine);
+        }
     }
 }

@@ -115,6 +115,23 @@ namespace Game
             for (int i = LifeUnits.Count - 1; i >= 0; i--)
             {
                 LifeUnits[i].OnUpdate();
+
+                if (LifeUnits[i].IsDead)
+                {
+                    _deadUnits.Add(LifeUnits[i]);
+                    _lifeUnits.Remove(LifeUnits[i]);
+                }
+            }
+
+            for (int i = DeadUnits.Count - 1; i >= 0; i--)
+            {
+                DeadUnits[i].OnUpdate();
+
+                if (!DeadUnits[i].IsDead)
+                {
+                    _lifeUnits.Add(DeadUnits[i]);
+                    _deadUnits.Remove(DeadUnits[i]);
+                }
             }
         }
     }

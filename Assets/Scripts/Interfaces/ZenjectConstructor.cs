@@ -24,6 +24,7 @@ namespace Game
     {
         public DiContainer DiContainer { get; private set; }
 
+        [Inject]
         public virtual void Consturctor(DiContainer diContainer)
         {
             DiContainer = diContainer;

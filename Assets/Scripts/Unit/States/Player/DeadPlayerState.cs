@@ -11,6 +11,7 @@ namespace Game
         public override void Start()
         {
             base.Start();
+            Animator.enabled = false;
             Controller.Owner.IsGroundedSetting.SetDistance(.43f);
             Controller.Owner.transform.localRotation = Quaternion.Euler(0, 0, 90);
         }
@@ -23,8 +24,9 @@ namespace Game
             {
                 Rigidbody.simulated = false;
                 Collider.isTrigger = true;
-
-                Machine.Switch(null);
+                Controller.Owner.SetController(null);
+                if (!Controller.Owner.Hand.Empty)
+                    Controller.Owner.Hand.Destroy();
                 return;
             }
         }

@@ -41,6 +41,7 @@ namespace Game
                 {
                     if (raycast.collider.TryGetComponent<UnitPlayer>(out UnitPlayer player))
                     {
+                        Attack(player.transform);
                     }
                 }
             }

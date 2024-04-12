@@ -28,6 +28,7 @@ namespace Game
         public override void Finish()
         {
             base.Finish();
+            _boxCollider2D.offset = Vector2.zero;
             _boxCollider2D.size = _defaultSize;
         }
 

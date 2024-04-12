@@ -1,3 +1,5 @@
+using Fungus;
+using Game.Installers;
 using Game.Weapons;
 using UnityEngine;
 
@@ -24,23 +26,40 @@ namespace Game
         public Unit Owner { get; private set; }
         public IWeapon Weapon { get; private set; }
 
+        private bool _tryShot = false;
+        private Pause _pause;
         public void Init(Unit data)
         {
             Owner = data;
+            _pause = data.DiContainer.TryResolve<Pause>();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent<Unit>(out Unit unit))
             {
-                Renderer.color = InTarget;
+                if (unit != Owner)
+                {
+                    Renderer.color = InTarget;
+                    _tryShot = true;
+                }
             }
 
+            if (collision.TryGetComponent<Clickable2D>(out Clickable2D clickable))
+            {
+                Renderer.enabled = false;
+            }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
             Renderer.color = Free;
+            _tryShot = false;
+
+            if (collision.TryGetComponent<Clickable2D>(out Clickable2D clickable))
+            {
+                Renderer.enabled = true;
+            }
         }
 
         public void Move()
@@ -57,7 +76,10 @@ namespace Game
         {
             if (Owner != null && !Owner.Hand.Empty && (Weapon = Owner.Hand.ItemHand as Weapon) != null)
             {
-                Weapon.TryShot();
+                if (_tryShot)
+                {
+                    Weapon.TryShot(transform.position);
+                }
             }
 
         }
@@ -70,8 +92,14 @@ namespace Game
             }
 
         }
+
         private void Update()
         {
+            if (_pause.Status)
+            {
+                return;
+            }
+
             Move();
 
             if (Input.GetMouseButtonDown(0))

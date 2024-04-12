@@ -63,7 +63,7 @@ namespace Game
         public virtual void SetController(IUnitController controller)
         {
             Controller = controller;
-            Controller.Init(this);
+            Controller?.Init(this);
         }
 
         private void OnDrawGizmos()

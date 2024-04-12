@@ -10,8 +10,8 @@ namespace Game.Weapons
         public Magazine Magazine { get; }
 
         public Quaternion LookTargte(Transform target, float maxAngle);
-        public bool TryShot();
-        public void Shot(SOAmmo ammo);
+        public bool TryShot(Vector3 target);
+        public Ammo Shot(SOAmmo ammo);
         public void Reloading();
         public void Drop();
     }
@@ -21,7 +21,7 @@ namespace Game.Weapons
         public Magazine Magazine { get; private set; }
 
         protected SOWeapon _SOWeapon;
-        protected List<AmmoHandPistol> _ammos;
+        protected List<Ammo> _ammos;
         private float _delay;
 
         public override void Init(SOBaseItem data)
@@ -35,10 +35,10 @@ namespace Game.Weapons
             base.SetOwner(unit);
             Magazine = new Magazine();
             Magazine.Init(_SOWeapon.SOMagazine);
-            _ammos = new List<AmmoHandPistol>((int)_SOWeapon.SOMagazine.Model.Data.Amount.Max);
+            _ammos = new List<Ammo>((int)_SOWeapon.SOMagazine.Model.Data.Amount.Max);
         }
 
-        public virtual bool TryShot()
+        public virtual bool TryShot(Vector3 target)
         {
             if (_delay <= 0f)
             {
@@ -46,7 +46,9 @@ namespace Game.Weapons
 
                 if (ammo != null)
                 {
-                    Shot(ammo);
+                    Ammo instance = Shot(ammo);
+                    instance.SetDirection(target - transform.position);
+                    instance.Execute();
                     return true;
                 }
             }
@@ -54,15 +56,16 @@ namespace Game.Weapons
             return false;
         }
 
-        public virtual void Shot(SOAmmo ammo)
+        public virtual Ammo Shot(SOAmmo ammo)
         {
-            AmmoHandPistol ammopistol = GameObject.Instantiate(ammo.PrefabHand) as AmmoHandPistol;
-            ammopistol.transform.position = Owner.Hand.Anchor.position;
-            ammopistol.Consturctor(DiContainer);
-            ammopistol.SetOwner(Owner);
-            ammopistol.Init(ammo);
-            _ammos.Add(ammopistol);
+            Ammo ammoInstance = GameObject.Instantiate(ammo.PrefabHand) as Ammo;
+            ammoInstance.transform.position = Owner.Hand.Anchor.position;
+            ammoInstance.Consturctor(DiContainer);
+            ammoInstance.SetOwner(Owner);
+            ammoInstance.Init(ammo);
+            _ammos.Add(ammoInstance);
             _delay = _SOWeapon.DelayBetweenShots;
+            return ammoInstance;
         }
 
         public virtual void Reloading()
@@ -80,15 +83,6 @@ namespace Game.Weapons
             item.transform.position = Owner.transform.position + Owner.transform.localScale * offset;
             Destroy(Owner.Hand.ItemHand.gameObject);
         }
-
-        //public override void Execute()
-        //{
-        //    base.Execute();
-        //    if (!TryShot())
-        //    {
-        //        Reloading();
-        //    }
-        //}
 
         public override void OnUpdate()
         {
